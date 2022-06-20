@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>New Local Store</h1>
+    <form action="/localshops" method="post">
+        <div>
+            <label for="shopName">ShopName</label>
+            <input type="text" id="shopName" name="localshop[shopName]">
+        </div>
+        <div>
+            <label for="location">Location</label>
+            <input type="text" id="location" name="localshop[location]">
+        </div>
+        <button>Add Local shop</button>
+    </form>
+    <a href="/localshops">Back to localshops</a>
+</body>
+</html>

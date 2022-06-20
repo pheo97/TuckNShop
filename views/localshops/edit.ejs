@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Edit Local store</h1>
+    <form action="/localshops/<%= localshop._id %>?_method=PUT " method="POST">
+        <div>
+            <label for="shopName">ShopName</label>
+            <input type="text" id="shopName" name="localshop[shopName]" value="<%= localshop.shopName %> ">
+        </div>
+        <div>
+            <label for="location">Location</label>
+            <input type="text" id="location" name="localshop[location]" value="<%= localshop.location %> ">
+        </div>
+        <button>update Local shop</button>
+    </form>
+     <a href="/localshops/<%=localshop._id %>">back to localshop</a>
+</body>
+</html>

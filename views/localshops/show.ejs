@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Local Store</title>
+</head>
+<body>
+    <h1>Localstore</h1>
+    <h2><%= localshop.shopName %> </h2>
+    <h2><%= localshop.location %> </h2>
+    <form action="/localshops/<%=localshop._id%>?_method=DELETE" method="POST">
+        <button>DELETE</button>
+    </form>
+    <a href="/localshops">Back to local shops</a>
+    <a href="/localshops/<%= localshop._id %>/edit ">edit local shop</a>
+</body>
+</html>
