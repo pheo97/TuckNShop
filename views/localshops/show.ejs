@@ -1,19 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Local Store</title>
-</head>
-<body>
-    <h1>Localstore</h1>
-    <h2><%= localshop.shopName %> </h2>
-    <h2><%= localshop.location %> </h2>
-    <form action="/localshops/<%=localshop._id%>?_method=DELETE" method="POST">
-        <button>DELETE</button>
-    </form>
-    <a href="/localshops">Back to local shops</a>
-    <a href="/localshops/<%= localshop._id %>/edit ">edit local shop</a>
-</body>
-</html>
+<% layout('layouts/boilerplate') %> 
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card">
+            <img src="<%= localshop.image %>" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"> <%= localshop.shopName %> </h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-muted"><%= localshop.location %> </li>
+              <li class="list-group-item"><%= localshop.description %></li>
+              <li class="list-group-item">R<%= localshop.price %></li>
+            </ul>
+            <div class="card-body">
+              <a href="/localshops/<%= localshop._id %>/edit" class="card-link btn btn-info">Edit Store</a>
+              <form class="d-inline" action="/localshops/<%=localshop._id%>?_method=DELETE" method="POST">
+                <button class="btn btn-danger">DELETE</button>
+            </form>
+            </div>
+          </div>
+    </div>
+    <a href="/localshops" class="card-link btn btn-primary">Back to LocalShops</a>
+</div>
+

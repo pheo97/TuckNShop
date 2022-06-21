@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const localShopSchema = new Schema({
     shopName : String,
-    price : String,
+    image : String,
+    price : Number,
     description:String,
     location : String,
 });

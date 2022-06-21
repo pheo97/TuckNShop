@@ -20,9 +20,13 @@ const seedDB = async () =>{
     await Localshop.deleteMany();
     for(let i = 0; i < 50; i++){
         const rand1000 = Math.floor(Math.random() * 1000);
+        const price = Math.floor(Math.random() * 50) + 10
         const newShop = new Localshop({
             location:`${cities[rand1000].city},${cities[rand1000].state}`,
-            shopName:`${sample(descriptors)} ${sample(places)}`
+            shopName:`${sample(descriptors)} ${sample(places)}`,
+            image:'https://source.unsplash.com/collection/1418918',
+            description:'New local store in town',
+            price
         })
          await newShop.save();
     }
