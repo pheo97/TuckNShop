@@ -2,30 +2,46 @@
 <div class="row">
     <h1 class="text-center">Create New Local Store</h1>
     <div class="col-6 offset-3">
-        <form action="/localshops" method="post">
+        <form action="/localshops" method="post" novalidate class="validated-form">
             <div class="mb-3">
                 <label class="form-label" for="shopName">ShopName</label>
-                <input class="form-control" type="text" id="shopName" name="localshop[shopName]">
+                <input class="form-control" type="text" id="shopName" name="localshop[shopName]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="localshop[location]">
+                <input class="form-control" type="text" id="location" name="localshop[location]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="image">Image Url</label>
-                <input class="form-control" type="text" id="image" name="localshop[image]">
+                <input class="form-control" type="text" id="image" name="localshop[image]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="price">price</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="price">R</span>
                     <input type="text" class="form-control" placeholder="0.00"
-                     aria-label="price" aria-describedby="price" name="localshop[price]">
+                     aria-label="price" aria-describedby="price" name="localshop[price]" required>
+                     <div class="valid-feedback">
+                        Looks good!
+                      </div>
                 </div>    
             </div>
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="localshop[description]"></textarea>
+                <textarea class="form-control" type="text" id="description"
+                 name="localshop[description]" required></textarea>
+                 <div class="valid-feedback">
+                    Looks good!
+                  </div>
             </div>
             <div class="mb-3">
                 <button class="btn btn-success">Add Local shop</button>

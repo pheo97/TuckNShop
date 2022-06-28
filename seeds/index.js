@@ -25,7 +25,7 @@ const seedDB = async () =>{
             location:`${cities[rand1000].city},${cities[rand1000].state}`,
             shopName:`${sample(descriptors)} ${sample(places)}`,
             image:'https://source.unsplash.com/collection/1418918',
-            description:'New local store in town',
+            description:'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste consequuntur ea vero, est quisquam, doloremque minus distinctio consectetur expedita corporis cum, quam qui inventore alias enim ipsam officiis soluta voluptas.',
             price
         })
          await newShop.save();
