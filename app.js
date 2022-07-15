@@ -3,12 +3,13 @@ const path = require ('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const Joi = require('joi');
-const { localstoreSchema } = require('./schemas.js')
+const { localstoreSchema, reviewSchema } = require('./schemas.js')
 const wrapAsync = require('./utilities/wrapAsync');
 const ExpressError = require('./utilities/ExpressError')
 const ejsMate = require('ejs-mate')
 const Localshop = require('./models/localShop');
 const { urlencoded } = require('express');
+const Review = require('./models/review')
 
 mongoose.connect('mongodb://localhost:27017/tuck-n-shop',{
     useNewUrlParser: true,
@@ -24,6 +25,16 @@ const validateLocalstore = (req, res, next) =>{
      }else{
         next()
      }
+}
+
+const validateReview = ( req, res , next) => {
+   const { error } = reviewSchema.validate(req.body);
+   if(error){
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    }else{
+        next()
+    }
 }
 
 const db = mongoose.connection;
@@ -63,8 +74,8 @@ app.post('/localshops',validateLocalstore, wrapAsync(async (req,res) => {
 }));
 
 app.get('/localshops/:id',wrapAsync(async (req,res) =>{
-    const localshop = await Localshop.findById(req.params.id)
-    res.render('localshops/show', { localshop })
+    const localshop = await Localshop.findById(req.params.id).populate('reviews');
+    res.render('localshops/show', { localshop });
 }));
 
 app.get('/localshops/:id/edit', wrapAsync(async (req,res) =>{
@@ -81,8 +92,23 @@ app.put('/localshops/:id',validateLocalstore, wrapAsync(async (req,res) =>{
 app.delete('/localshops/:id',wrapAsync( async (req,res) =>{
     const { id } = req.params
     const localshop = await Localshop.findByIdAndDelete(id);
-    console.log(localshop)
-    res.redirect('/localshops')
+    res.redirect('/localshops');
+}));
+
+app.post('/localshops/:id/reviews', validateReview, wrapAsync( async(req,res) =>{
+    const localshop = await Localshop.findById(req.params.id);
+    const review = new Review(req.body.review)
+    localshop.reviews.push(review);
+    await review.save();
+    await localshop.save();
+    res.redirect(`/localshops/${localshop._id}`)
+}))
+
+app.delete('/localshops/:id/reviews/:reviewId', wrapAsync ( async (req,res) =>{
+    const { id, reviewId} = req.params;
+    Localshop.findByIdAndUpdate(id, {$pull: { reviews:reviewId }})
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/localshops/${id}`)
 }));
 
 app.all('*',(req,res,next)=>{
