@@ -1,28 +1,17 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
 
-const { reviewSchema } = require('../schemas.js');
-
 const Localshop = require('../models/localShop');
 const Review = require('../models/review');
 
 const wrapAsync = require('../utilities/wrapAsync');
-const ExpressError = require('../utilities/ExpressError');
 
+const { validateReview, isLoggedIn, isReviewAuthor } = require('../middleware');
 
-const validateReview = ( req, res , next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if(error){
-         const msg = error.details.map(el => el.message).join(',')
-         throw new ExpressError(msg, 400)
-     }else{
-         next()
-     }
- }
-
-router.post('/', validateReview, wrapAsync( async(req,res) =>{
+router.post('/',isLoggedIn, validateReview, wrapAsync( async(req,res) =>{
     const localshop = await Localshop.findById(req.params.id);
-    const review = new Review(req.body.review)
+    const review = new Review(req.body.review);
+    review.author = req.user._id;
     localshop.reviews.push(review);
     await review.save();
     await localshop.save();
@@ -30,7 +19,7 @@ router.post('/', validateReview, wrapAsync( async(req,res) =>{
     res.redirect(`/localshops/${localshop._id}`)
 }))
 
-router.delete('/:reviewId', wrapAsync ( async (req,res) =>{
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, wrapAsync ( async (req,res) =>{
     const { id, reviewId} = req.params;
     Localshop.findByIdAndUpdate(id, {$pull: { reviews:reviewId }})
     await Review.findByIdAndDelete(reviewId);

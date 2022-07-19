@@ -1,27 +1,8 @@
 const express = require('express');
 const router = express.Router();
-
 const Localshop = require('../models/localShop');
-const flash = require('connect-flash');
-
 const wrapAsync = require('../utilities/wrapAsync');
-const ExpressError = require('../utilities/ExpressError');
-
-const { localstoreSchema } = require('../schemas.js');
-
-const { isLoggedIn } = require('../middleware');
-
-
-const validateLocalstore = (req, res, next) =>{
-    const { error } = localstoreSchema.validate(req.body);
-    console.log(error)
-    if(error){
-       const msg = error.details.map(el => el.message).join(',')
-       throw new ExpressError(msg, 400)
-    }else{
-       next()
-    }
-}
+const { isLoggedIn, isAuthorised, validateLocalstore } = require('../middleware');
 
 router.get('/', async (req,res) =>{
     const localshops = await Localshop.find({})
@@ -33,15 +14,20 @@ router.get('/new', isLoggedIn, async (req,res) =>{
 });
 
 router.post('/',isLoggedIn,validateLocalstore,  wrapAsync(async (req,res) => {
-    //if(!req.body.localshops) throw new ExpressError('Invalid Data',400)
    const localshop = new Localshop (req.body.localshop);
+   localshop.author = req.user._id;
    await localshop.save();
    req.flash('success', 'Successfully created new Store');
    res.redirect(`/localshops/${localshop._id}`);
 }));
 
 router.get('/:id',wrapAsync(async (req,res) =>{
-    const localshop = await Localshop.findById(req.params.id).populate('reviews');
+    const localshop = await Localshop.findById(req.params.id)
+    .populate({ path: 'reviews',
+                populate:{
+                    path: 'author'
+                }    
+    }).populate('author');
     if(!localshop){
         req.flash('error', 'Store does not exist');
         return res.redirect('/localshops');
@@ -49,8 +35,9 @@ router.get('/:id',wrapAsync(async (req,res) =>{
     res.render('localshops/show', { localshop });
 }));
 
-router.get('/:id/edit',isLoggedIn, wrapAsync(async (req,res) =>{
-    const localshop = await Localshop.findById(req.params.id);
+router.get('/:id/edit',isLoggedIn, isAuthorised, wrapAsync(async (req,res) =>{
+    const { id } = req.params
+    const localshop = await Localshop.findById(id);
     if(!localshop){
         req.flash('error', 'Store does not exist');
         return res.redirect('/localshops');
@@ -65,7 +52,7 @@ router.put('/:id',isLoggedIn , validateLocalstore, wrapAsync(async (req,res) =>{
     res.redirect(`/localshops/${localshop._id}`);
 }))
 
-router.delete('/:id',isLoggedIn,wrapAsync( async (req,res) =>{
+router.delete('/:id', isLoggedIn, isAuthorised, wrapAsync( async (req,res) =>{
     const { id } = req.params
     const localshop = await Localshop.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted store');
