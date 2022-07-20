@@ -25,9 +25,22 @@ const seedDB = async () =>{
             author: "62d56f6ca98ec9e2093cdd86",
             location:`${cities[rand1000].city},${cities[rand1000].state}`,
             shopName:`${sample(descriptors)} ${sample(places)}`,
-            image:'https://source.unsplash.com/collection/1418918',
             description:'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste consequuntur ea vero, est quisquam, doloremque minus distinctio consectetur expedita corporis cum, quam qui inventore alias enim ipsam officiis soluta voluptas.',
-            price
+            price,
+            geometry:{
+                type: "Point",
+                coordinates: [-133.1331, 47.0202]
+            },
+            images:[
+                {
+                  url: 'https://res.cloudinary.com/ddvvtpekz/image/upload/v1658253740/TuckNShop/ruaejcnrifjdrgrdcnce.jpg',
+                  filename: 'TuckNShop/ruaejcnrifjdrgrdcnce'
+                },
+                {
+                  url: 'https://res.cloudinary.com/ddvvtpekz/image/upload/v1658253740/TuckNShop/mw3wlyzzrpzvm1pp6ayd.jpg',
+                  filename: 'TuckNShop/mw3wlyzzrpzvm1pp6ayd'
+                }
+              ]
         })
          await newShop.save();
     }

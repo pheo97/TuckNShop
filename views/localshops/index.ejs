@@ -6,7 +6,11 @@
            <div class="card">
             <div class="row">
                 <div class="col-md-4">
-                    <img src="<%= localshop.image %> " alt="" class="img-fluid">
+                    <% if(localshop.images.length){ %> 
+                    <img src="<%= localshop.images[1].url %> " alt="" class="img-fluid">
+                    <% }else{ %> 
+                        <img src=" " alt="" class="img-fluid">
+                        <% } %> 
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">

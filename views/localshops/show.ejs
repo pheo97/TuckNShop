@@ -1,9 +1,32 @@
 <% layout('layouts/boilerplate') %> 
+
+<script>
+   const mapToken = '<%- process.env.MAPBOX_TOKEN%>'
+   const localshop = <%- JSON.stringify(localshop)%>
+</script>
 <link rel="stylesheet" href="/starsRatings.css">
 <div class="row">
     <div class="col-6 ">
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <% localshop.images.forEach((img, i) =>{%> 
+          <div class="carousel-item <%= i === 0 ? 'active' :''%>">
+            <img src="<%= img.url%> " class="d-block w-100" alt="">
+          </div>
+          <% }) %> 
+        </div>
+        <% if(localshop.images.length > 1){%> 
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        <% } %> 
+      </div>
         <div class="card">
-            <img src="<%= localshop.image %>" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title"> <%= localshop.shopName %> </h5>
               <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -25,7 +48,7 @@
           </div>
     </div>
     <div class="col-6">
-
+      <div id='map' style='width: 400px; height: 300px;'></div>
       <% if(currentUser){ %> 
       <h2>Leave A Review</h2>
           <form action="/localshops/<%=localshop._id%>/reviews" method="POST" class="mt-3 validated-form" novalidate>
@@ -76,3 +99,4 @@
     <a href="/localshops" class="card-link btn btn-primary">Back to LocalShops</a>
 </div>
 
+<script src="/showMap.js"></script>
