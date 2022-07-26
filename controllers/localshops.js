@@ -34,7 +34,6 @@ module.exports.createShop = async (req,res) => {
         req.flash('error', 'Store does not exist');
         return res.redirect('/localshops');
     } 
-    console.log(localshop)
     res.render('localshops/show', { localshop });
 };
 

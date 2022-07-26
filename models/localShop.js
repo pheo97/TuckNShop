@@ -1,6 +1,7 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 const Review = require('./review');
+const opts = { toJSON : { virtuals: true}};
 
 const ImageSchema = new Schema({
         url:String,
@@ -39,6 +40,10 @@ const localShopSchema = new Schema({
         }
     ]
 });
+
+localShopSchema.virtual('properties.popUpMarkup').get(function(){
+    return `<strong><a href="/localshops/${this._id}">${this.shopName}</a></strong>`
+ });
 
 localShopSchema.post('findOneAndDelete', async function(doc){
     if(doc){

@@ -1,9 +1,11 @@
-<% layout('layouts/boilerplate') %> 
+    <% layout('layouts/boilerplate') %> 
+    <div id="map" style="width:100% ; height:500px"></div>
+    <div class="container"></div>
     <h1>all shops</h1>
     <a href="/localshops/new">Create New local shop</a>
     <ul>
         <% for(let localshop of localshops){ %>
-           <div class="card">
+            <div class="card">
             <div class="row">
                 <div class="col-md-4">
                     <% if(localshop.images.length){ %> 
@@ -21,7 +23,12 @@
                     </div>
                 </div>
             </div>
-           </div>
+            </div>
         <% } %> 
     </ul>
+    <script>
+        const mapToken = '<%- process.env.MAPBOX_TOKEN%>'
+        const localshops = {features : <%- JSON.stringify(localshops) %>}
+    </script>
+    <script src="/javascripts/clusterMap.js"></script>
     
